@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="tech-wave">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Every Tool You Need Is Available Here</title>
+    <!-- Font Awesome CDN for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        :root {
+            /* Default Theme: Tech Wave */
+            --primary-bg-color: #f8f9fa;
+            --secondary-bg-color: #e9ecef;
+            --header-bg-gradient: linear-gradient(135deg, #005c97, #363795);
+            --card-bg-color: #ffffff;
+            --card-border-color: #dee2e6;
+            --primary-text-color: #212529;
+            --subtitle-color: #005c97;
+            --btn-bg-color: linear-gradient(135deg, #0067a3, #005c97);
+            --btn-text-color: #ffffff;
+            --nav-bg-color: #ffffff;
+            --image-card-bg: #e9f5ff;
+            --pdf-card-bg: #f8f0ff;
+            --calc-card-bg: #e6fff0;
+            /* Underline Color */
+            --header-underline-color: #343a40;
+        }
+
+        [data-theme="midnight"] {
+            --primary-bg-color: #0d1117;
+            --secondary-bg-color: #161b22;
+            --header-bg-gradient: linear-gradient(135deg, #1f6feb, #0d1117);
+            --card-bg-color: #161b22;
+            --card-border-color: #30363d;
+            --primary-text-color: #c9d1d9;
+            --subtitle-color: #58a6ff;
+            --btn-bg-color: linear-gradient(135deg, #1f6feb, #388bfd);
+            --btn-text-color: #ffffff;
+            --nav-bg-color: #161b22;
+            --image-card-bg: #21262d;
+            --pdf-card-bg: #20242c;
+            --calc-card-bg: #22272e;
+            /* Underline Color */
+            --header-underline-color: #dee2e6;
+        }
+
+        [data-theme="sunset"] {
+            --primary-bg-color: #fff3e0;
+            --secondary-bg-color: #ffe0b2;
+            --header-bg-gradient: linear-gradient(135deg, #ff7043, #ff5722);
+            --card-bg-color: #ffffff;
+            --card-border-color: #ffcc80;
+            --primary-text-color: #4e342e;
+            --subtitle-color: #f4511e;
+            --btn-bg-color: linear-gradient(135deg, #f4511e, #e64a19);
+            --btn-text-color: #ffffff;
+            --nav-bg-color: #ffe0b2;
+            --image-card-bg: #fdebd0;
+            --pdf-card-bg: #fad7a0;
+            --calc-card-bg: #fae5d3;
+            /* Underline Color */
+            --header-underline-color: #4e342e;
+        }
+        
+        [data-theme="ocean"] {
+            --primary-bg-color: #e0f7fa;
+            --secondary-bg-color: #b2ebf2;
+            --header-bg-gradient: linear-gradient(135deg, #009688, #00796b);
+            --card-bg-color: #ffffff;
+            --card-border-color: #4dd0e1;
+            --primary-text-color: #004d40;
+            --subtitle-color: #00897b;
+            --btn-bg-color: linear-gradient(135deg, #00897b, #00796b);
+            --btn-text-color: #ffffff;
+            --nav-bg-color: #ffffff;
+            --image-card-bg: #e0f2f1;
+            --pdf-card-bg: #e1f5fe;
+            --calc-card-bg: #f1f8e9;
+            /* Underline Color */
+            --header-underline-color: #004d40;
+        }
+
+        [data-theme="natural"] {
+            --primary-bg-color: #f5f5f5;
+            --secondary-bg-color: #e5e5e5;
+            --header-bg-gradient: linear-gradient(135deg, #556b2f, #6b8e23);
+            --card-bg-color: #ffffff;
+            --card-border-color: #c5e1a5;
+            --primary-text-color: #333d29;
+            --subtitle-color: #556b2f;
+            --btn-bg-color: linear-gradient(135deg, #6b8e23, #556b2f);
+            --btn-text-color: #ffffff;
+            --nav-bg-color: #ffffff;
+            --image-card-bg: #f1f8e9;
+            --pdf-card-bg: #f9fbe7;
+            --calc-card-bg: #e8f5e9;
+            /* Underline Color */
+            --header-underline-color: #333d29;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif; margin: 0;
+            background-color: var(--primary-bg-color); color: var(--primary-text-color);
+            transition: background-color 0.5s, color 0.5s;
+        }
+        .header-section {
+            text-align: center; padding: 60px 20px;
+            background: var(--header-bg-gradient); color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            position: relative; z-index: 1;
+        }
+        .header-section h1 { font-size: 2.8em; margin: 0; font-weight: 700; }
+        .header-section .subtitle {
+            font-weight: 700; color: var(--subtitle-color); background-color: rgba(255, 255, 255, 0.9);
+            display: inline-block; padding: 5px 15px; border-radius: 20px; margin-top: 15px; font-size: 1.5em;
+        }
+        .filter-container {
+            display: flex; flex-direction: column; gap: 15px;
+            background-color: var(--nav-bg-color); padding: 20px;
+            position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .filter-group { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+        .filter-title { font-weight: 700; margin-right: 10px; font-size: 1.1em; }
+        .filter-btn {
+            display: inline-block; padding: 8px 16px; border-radius: 8px;
+            background-color: var(--secondary-bg-color); color: var(--primary-text-color);
+            border: 1px solid var(--card-border-color); text-decoration: none; font-weight: 500;
+            transition: all 0.2s ease-in-out; cursor: pointer;
+        }
+        .filter-btn:hover { transform: translateY(-2px); border-color: var(--subtitle-color); }
+        .filter-btn.active {
+            background: var(--btn-bg-color); color: var(--btn-text-color);
+            border-color: transparent; font-weight: 700;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .main-content { padding: 40px 20px; }
+        .tool-section { margin-bottom: 50px; }
+        .tool-section h2 {
+            font-weight: 700; color: var(--primary-text-color);
+            border-bottom: 3px solid var(--header-underline-color); padding-bottom: 10px;
+            margin-bottom: 30px; font-size: 1.8em;
+        }
+        .tool-section h3 {
+            font-size: 1.4em; color: var(--primary-text-color); margin-top: 40px;
+            margin-bottom: 20px; padding-bottom: 8px;
+            border-bottom: 2px solid var(--header-underline-color);
+        }
+        .grid-layout {
+            display: grid; gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+        }
+        .card-link { text-decoration: none; }
+        .card {
+            background-color: var(--card-bg-color); border: 1px solid var(--card-border-color);
+            border-radius: 12px; padding: 20px; text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex;
+            flex-direction: column; justify-content: space-between; min-height: 150px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        
+        .card-icon {
+            font-size: 2.2em;
+            margin-bottom: 15px;
+            color: var(--subtitle-color);
+            transition: color 0.3s;
+        }
+
+        [data-category="image-tools"] .card { background-color: var(--image-card-bg); }
+        [data-category="pdf-tools"] .card { background-color: var(--pdf-card-bg); }
+        [data-category^="calculator"] .card { background-color: var(--calc-card-bg); }
+        .card-title {
+            font-size: 1.1em; font-weight: 700; color: var(--primary-text-color);
+            margin: auto 0;
+        }
+        .use-tool-btn {
+            background: var(--btn-bg-color); color: var(--btn-text-color);
+            padding: 10px 18px; border-radius: 8px; font-weight: 700;
+            transition: filter 0.2s, box-shadow 0.2s; display: inline-block;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-top: 15px;
+        }
+        .card:hover .use-tool-btn { filter: brightness(1.1); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        @media (min-width: 1200px) { .grid-layout { grid-template-columns: repeat(5, 1fr); } }
+        @media (max-width: 600px) { .grid-layout { grid-template-columns: repeat(1, 1fr); } }
+    </style>
+</head>
+<body>
+
+    <header class="header-section">
+        <h1>Every Tool You Need Is Available Here</h1>
+        <p class="subtitle">Let's Start with us</p>
+    </header>
+
+    <nav class="filter-container">
+        <div class="filter-group" id="theme-switcher">
+            <span class="filter-title">Theme:</span>
+            <a href="#" class="filter-btn active" data-theme="tech-wave">Tech Wave</a>
+            <a href="#" class="filter-btn" data-theme="midnight">Midnight</a>
+            <a href="#" class="filter-btn" data-theme="sunset">Sunset</a>
+            <a href="#" class="filter-btn" data-theme="ocean">Ocean</a>
+            <a href="#" class="filter-btn" data-theme="natural">Natural</a>
+        </div>
+        <div class="filter-group" id="category-filter">
+            <span class="filter-title">Category:</span>
+            <a href="#" class="filter-btn active" data-category="all">All</a>
+            <a href="#" class="filter-btn" data-category="image-tools">Image Tools</a>
+            <a href="#" class="filter-btn" data-category="pdf-tools">PDF Tools</a>
+            <a href="#" class="filter-btn" data-category="calculators">Calculators</a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+
+        <section id="image-tools" class="tool-section" data-category="image-tools">
+            <h2>Image Tools</h2>
+            <div class="grid-layout">
+                <a href="mn.html#compress-image" class="card-link"><div class="card"><i class="fas fa-compress-arrows-alt card-icon"></i><h3 class="card-title">Image Compressor</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#resize-image" class="card-link"><div class="card"><i class="fas fa-expand-arrows-alt card-icon"></i><h3 class="card-title">Image Resizer</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#convert-image" class="card-link"><div class="card"><i class="fas fa-sync-alt card-icon"></i><h3 class="card-title">Format Converter</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#pdf-to-image" class="card-link"><div class="card"><i class="fas fa-file-image card-icon"></i><h3 class="card-title">PDF to Image</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#image-to-pdf" class="card-link"><div class="card"><i class="fas fa-file-pdf card-icon"></i><h3 class="card-title">Image to PDF</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#remove-bg" class="card-link"><div class="card"><i class="fas fa-eraser card-icon"></i><h3 class="card-title">Remove Background</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#profile-photo" class="card-link"><div class="card"><i class="fas fa-user-circle card-icon"></i><h3 class="card-title">Profile Photo Maker</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#heic-converter" class="card-link"><div class="card"><i class="fas fa-exchange-alt card-icon"></i><h3 class="card-title">HEIC Converter</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#combine-image" class="card-link"><div class="card"><i class="fas fa-images card-icon"></i><h3 class="card-title">Combine Images</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#png-to-webp" class="card-link"><div class="card"><i class="fas fa-file-export card-icon"></i><h3 class="card-title">PNG to WebP</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#png-to-svg" class="card-link"><div class="card"><i class="fas fa-file-code card-icon"></i><h3 class="card-title">PNG to SVG</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#image-to-bw" class="card-link"><div class="card"><i class="fas fa-palette card-icon"></i><h3 class="card-title">Image to B&W</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#add-border" class="card-link"><div class="card"><i class="fas fa-border-style card-icon"></i><h3 class="card-title">Add Border to Image</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#gif-to-mp4" class="card-link"><div class="card"><i class="fas fa-video card-icon"></i><h3 class="card-title">GIF to MP4</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#vsd-converter" class="card-link"><div class="card"><i class="fas fa-project-diagram card-icon"></i><h3 class="card-title">VSD to Image</h3><span class="use-tool-btn">Use Tool</span></div></a>
+            </div>
+        </section>
+
+        <section id="pdf-tools" class="tool-section" data-category="pdf-tools">
+            <h2>PDF Tools</h2>
+            <div class="grid-layout">
+                <a href="#merge-pdf" class="card-link"><div class="card"><i class="fas fa-object-group card-icon"></i><h3 class="card-title">Merge PDF</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#split-pdf" class="card-link"><div class="card"><i class="fas fa-object-ungroup card-icon"></i><h3 class="card-title">Split PDF</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#compress-pdf" class="card-link"><div class="card"><i class="fas fa-file-archive card-icon"></i><h3 class="card-title">Compress PDF</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#edit-pdf" class="card-link"><div class="card"><i class="fas fa-edit card-icon"></i><h3 class="card-title">Edit PDF</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#pdf-to-word" class="card-link"><div class="card"><i class="fas fa-file-word card-icon"></i><h3 class="card-title">PDF to Word</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#pdf-to-ppt" class="card-link"><div class="card"><i class="fas fa-file-powerpoint card-icon"></i><h3 class="card-title">PDF to PowerPoint</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#pdf-to-excel" class="card-link"><div class="card"><i class="fas fa-file-excel card-icon"></i><h3 class="card-title">PDF to Excel</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#word-to-pdf" class="card-link"><div class="card"><i class="fas fa-file-import card-icon"></i><h3 class="card-title">Word to PDF</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#ppt-to-pdf" class="card-link"><div class="card"><i class="fas fa-file-import card-icon"></i><h3 class="card-title">PowerPoint to PDF</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#excel-to-pdf" class="card-link"><div class="card"><i class="fas fa-file-import card-icon"></i><h3 class="card-title">Excel to PDF</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#sign-pdf" class="card-link"><div class="card"><i class="fas fa-signature card-icon"></i><h3 class="card-title">Sign PDF</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#watermark-pdf" class="card-link"><div class="card"><i class="fas fa-stamp card-icon"></i><h3 class="card-title">Watermark PDF</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#rotate-pdf" class="card-link"><div class="card"><i class="fas fa-redo card-icon"></i><h3 class="card-title">Rotate PDF</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#html-to-pdf" class="card-link"><div class="card"><i class="fab fa-html5 card-icon"></i><h3 class="card-title">HTML to PDF</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#unlock-pdf" class="card-link"><div class="card"><i class="fas fa-unlock card-icon"></i><h3 class="card-title">Unlock PDF</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#protect-pdf" class="card-link"><div class="card"><i class="fas fa-lock card-icon"></i><h3 class="card-title">Protect PDF</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#organize-pdf" class="card-link"><div class="card"><i class="fas fa-sitemap card-icon"></i><h3 class="card-title">Organize PDF</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#pdf-to-pdfa" class="card-link"><div class="card"><i class="fas fa-archive card-icon"></i><h3 class="card-title">PDF to PDF/A</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#repair-pdf" class="card-link"><div class="card"><i class="fas fa-wrench card-icon"></i><h3 class="card-title">Repair PDF</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#page-numbers" class="card-link"><div class="card"><i class="fas fa-list-ol card-icon"></i><h3 class="card-title">Page Numbers</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#scan-to-pdf" class="card-link"><div class="card"><i class="fas fa-scanner card-icon"></i><h3 class="card-title">Scan to PDF</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#ocr-pdf" class="card-link"><div class="card"><i class="fas fa-search-plus card-icon"></i><h3 class="card-title">OCR PDF</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#compare-pdf" class="card-link"><div class="card"><i class="fas fa-balance-scale card-icon"></i><h3 class="card-title">Compare PDF</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#redact-pdf" class="card-link"><div class="card"><i class="fas fa-highlighter card-icon"></i><h3 class="card-title">Redact PDF</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#crop-pdf" class="card-link"><div class="card"><i class="fas fa-crop-alt card-icon"></i><h3 class="card-title">Crop PDF</h3><span class="use-tool-btn">Use Tool</span></div></a>
+            </div>
+        </section>
+
+        <section id="calculator-general" class="tool-section" data-category="calculator-general">
+            <h2>General Calculators</h2>
+            <div class="grid-layout">
+                <a href="#basic-calculator" class="card-link"><div class="card"><i class="fas fa-calculator card-icon"></i><h3 class="card-title">Basic Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#scientific-calculator" class="card-link"><div class="card"><i class="fas fa-flask card-icon"></i><h3 class="card-title">Scientific Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#graphing-calculator" class="card-link"><div class="card"><i class="fas fa-chart-line card-icon"></i><h3 class="card-title">Graphing Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#programmer-calculator" class="card-link"><div class="card"><i class="fas fa-terminal card-icon"></i><h3 class="card-title">Programmer Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+            </div>
+        </section>
+        
+        <section id="calculator-finance" class="tool-section" data-category="calculator-finance">
+            <h2>Finance Calculators</h2>
+            <div class="grid-layout">
+                <a href="#loan-calculator" class="card-link"><div class="card"><i class="fas fa-landmark card-icon"></i><h3 class="card-title">Loan Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#mortgage-calculator" class="card-link"><div class="card"><i class="fas fa-home card-icon"></i><h3 class="card-title">Mortgage Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#compound-interest" class="card-link"><div class="card"><i class="fas fa-chart-pie card-icon"></i><h3 class="card-title">Compound Interest</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#currency-converter" class="card-link"><div class="card"><i class="fas fa-exchange-alt card-icon"></i><h3 class="card-title">Currency Converter</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#tax-calculator" class="card-link"><div class="card"><i class="fas fa-wallet card-icon"></i><h3 class="card-title">Salary / Income Tax</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#investment-calculator" class="card-link"><div class="card"><i class="fas fa-seedling card-icon"></i><h3 class="card-title">Investment & SIP</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#discount-calculator" class="card-link"><div class="card"><i class="fas fa-tag card-icon"></i><h3 class="card-title">Discount Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#gst-calculator" class="card-link"><div class="card"><i class="fas fa-percent card-icon"></i><h3 class="card-title">GST / VAT Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+            </div>
+        </section>
+        
+        <section id="calculator-math" class="tool-section" data-category="calculator-math">
+            <h2>Math & Conversion Calculators</h2>
+            <div class="grid-layout">
+                <a href="#unit-converter" class="card-link"><div class="card"><i class="fas fa-ruler-combined card-icon"></i><h3 class="card-title">Unit Converter</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#age-calculator" class="card-link"><div class="card"><i class="fas fa-birthday-cake card-icon"></i><h3 class="card-title">Age Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#fraction-calculator" class="card-link"><div class="card"><i class="fas fa-divide card-icon"></i><h3 class="card-title">Fraction / Ratio</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#algebra-solver" class="card-link"><div class="card"><i class="fas fa-equals card-icon"></i><h3 class="card-title">Algebra / Equation Solver</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#geometry-calculator" class="card-link"><div class="card"><i class="fas fa-shapes card-icon"></i><h3 class="card-title">Geometry Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+            </div>
+        </section>
+
+        <section id="calculator-health" class="tool-section" data-category="calculator-health">
+            <h2>Health & Fitness Calculators</h2>
+            <div class="grid-layout">
+                <a href="#bmi-calculator" class="card-link"><div class="card"><i class="fas fa-weight card-icon"></i><h3 class="card-title">BMI Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#bmr-calculator" class="card-link"><div class="card"><i class="fas fa-fire card-icon"></i><h3 class="card-title">BMR / Calorie Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#bodyfat-calculator" class="card-link"><div class="card"><i class="fas fa-percentage card-icon"></i><h3 class="card-title">Body Fat Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#heartrate-calculator" class="card-link"><div class="card"><i class="fas fa-heartbeat card-icon"></i><h3 class="card-title">Heart Rate Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#duedate-calculator" class="card-link"><div class="card"><i class="fas fa-baby card-icon"></i><h3 class="card-title">Due Date (Pregnancy)</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#water-calculator" class="card-link"><div class="card"><i class="fas fa-tint card-icon"></i><h3 class="card-title">Water Intake Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+            </div>
+        </section>
+
+        <section id="calculator-specialized" class="tool-section" data-category="calculator-specialized">
+            <h2>Specialized Calculators</h2>
+            <div class="grid-layout">
+                <a href="#date-calculator" class="card-link"><div class="card"><i class="fas fa-calendar-alt card-icon"></i><h3 class="card-title">Date Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#time-calculator" class="card-link"><div class="card"><i class="fas fa-clock card-icon"></i><h3 class="card-title">Time Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#tip-calculator" class="card-link"><div class="card"><i class="fas fa-hand-holding-usd card-icon"></i><h3 class="card-title">Tip Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#splitbill-calculator" class="card-link"><div class="card"><i class="fas fa-users card-icon"></i><h3 class="card-title">Split Bill Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#electricity-calculator" class="card-link"><div class="card"><i class="fas fa-bolt card-icon"></i><h3 class="card-title">Electricity Bill Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#fuel-calculator" class="card-link"><div class="card"><i class="fas fa-gas-pump card-icon"></i><h3 class="card-title">Fuel Cost Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#construction-calculator" class="card-link"><div class="card"><i class="fas fa-hard-hat card-icon"></i><h3 class="card-title">Construction Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#cooking-converter" class="card-link"><div class="card"><i class="fas fa-utensils card-icon"></i><h3 class="card-title">Cooking Measurement</h3><span class="use-tool-btn">Use Tool</span></div></a>
+            </div>
+        </section>
+
+        <section id="calculator-developer" class="tool-section" data-category="calculator-developer">
+            <h2>Developer & Tech Calculators</h2>
+            <div class="grid-layout">
+                <a href="#error-calculator" class="card-link"><div class="card"><i class="fas fa-exclamation-triangle card-icon"></i><h3 class="card-title">Percentage Error</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#data-converter" class="card-link"><div class="card"><i class="fas fa-hdd card-icon"></i><h3 class="card-title">Conversion (MB <> GB)</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#subnet-calculator" class="card-link"><div class="card"><i class="fas fa-network-wired card-icon"></i><h3 class="card-title">IP Subnet Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#hash-calculator" class="card-link"><div class="card"><i class="fas fa-hashtag card-icon"></i><h3 class="card-title">CRC / Hash Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#json-size" class="card-link"><div class="card"><i class="fas fa-file-code card-icon"></i><h3 class="card-title">JSON Size Calculator</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#timezone-converter" class="card-link"><div class="card"><i class="fas fa-globe card-icon"></i><h3 class="card-title">Time Zone Converter</h3><span class="use-tool-btn">Use Tool</span></div></a>
+            </div>
+        </section>
+
+        <section id="calculator-percentage" class="tool-section" data-category="calculator-percentage">
+            <h2>Percentage Calculators</h2>
+            
+            <div class="grid-layout">
+                <a href="#basic-percentage" class="card-link"><div class="card"><i class="fas fa-percentage card-icon"></i><h3 class="card-title">Basic Percentage</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#marks-percentage" class="card-link"><div class="card"><i class="fas fa-graduation-cap card-icon"></i><h3 class="card-title">Marks Percentage</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#overall-percentage" class="card-link"><div class="card"><i class="fas fa-chart-bar card-icon"></i><h3 class="card-title">Overall Percentage</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#cgpa-converter" class="card-link"><div class="card"><i class="fas fa-sync-alt card-icon"></i><h3 class="card-title">CGPA to Percentage</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#percentage-increase" class="card-link"><div class="card"><i class="fas fa-sort-amount-up card-icon"></i><h3 class="card-title">Percentage Increase</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#percentage-difference" class="card-link"><div class="card"><i class="fas fa-not-equal card-icon"></i><h3 class="card-title">Percentage Difference</h3><span class="use-tool-btn">Use Tool</span></div></a>
+            </div>
+
+            <h3>Salary / CTC (Corporate Use)</h3>
+            <div class="grid-layout">
+                <a href="#hike-percentage" class="card-link"><div class="card"><i class="fas fa-hand-holding-usd card-icon"></i><h3 class="card-title">Salary Hike Percentage</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#ctc-inhand" class="card-link"><div class="card"><i class="fas fa-money-bill-wave card-icon"></i><h3 class="card-title">CTC to In-Hand</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#bonus-percentage" class="card-link"><div class="card"><i class="fas fa-gift card-icon"></i><h3 class="card-title">Bonus Percentage</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#tax-deduction" class="card-link"><div class="card"><i class="fas fa-file-invoice-dollar card-icon"></i><h3 class="card-title">Tax/Deduction %</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#savings-percentage" class="card-link"><div class="card"><i class="fas fa-piggy-bank card-icon"></i><h3 class="card-title">Savings Percentage</h3><span class="use-tool-btn">Use Tool</span></div></a>
+            </div>
+
+            <h3>Finance & Business</h3>
+            <div class="grid-layout">
+                <a href="#profit-percentage" class="card-link"><div class="card"><i class="fas fa-arrow-up card-icon"></i><h3 class="card-title">Profit Percentage</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#loss-percentage" class="card-link"><div class="card"><i class="fas fa-arrow-down card-icon"></i><h3 class="card-title">Loss Percentage</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#discount-percentage" class="card-link"><div class="card"><i class="fas fa-tags card-icon"></i><h3 class="card-title">Discount Percentage</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#interest-percentage" class="card-link"><div class="card"><i class="fas fa-handshake card-icon"></i><h3 class="card-title">Interest Percentage</h3><span class="use-tool-btn">Use Tool</span></div></a>
+            </div>
+
+            <h3>Everyday Life</h3>
+            <div class="grid-layout">
+                <a href="#tip-percentage" class="card-link"><div class="card"><i class="fas fa-concierge-bell card-icon"></i><h3 class="card-title">Tip Percentage</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#billsplit-percentage" class="card-link"><div class="card"><i class="fas fa-receipt card-icon"></i><h3 class="card-title">Bill Split Percentage</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#percentage-of-number" class="card-link"><div class="card"><i class="fas fa-calculator card-icon"></i><h3 class="card-title">Percentage of Number</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#reverse-percentage" class="card-link"><div class="card"><i class="fas fa-undo card-icon"></i><h3 class="card-title">Reverse Percentage</h3><span class="use-tool-btn">Use Tool</span></div></a>
+                <a href="#contribution-percentage" class="card-link"><div class="card"><i class="fas fa-chart-pie card-icon"></i><h3 class="card-title">Contribution Percentage</h3><span class="use-tool-btn">Use Tool</span></div></a>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeSwitcher = document.getElementById('theme-switcher');
+            const categoryFilter = document.getElementById('category-filter');
+            const toolSections = document.querySelectorAll('.tool-section');
+
+            // Theme Switcher Logic
+            themeSwitcher.addEventListener('click', (e) => {
+                const clickedButton = e.target.closest('.filter-btn');
+                if (!clickedButton) return;
+
+                e.preventDefault();
+                themeSwitcher.querySelector('.filter-btn.active').classList.remove('active');
+                clickedButton.classList.add('active');
+                
+                const theme = clickedButton.getAttribute('data-theme');
+                document.documentElement.setAttribute('data-theme', theme);
+            });
+
+            // Category Filter Logic
+            categoryFilter.addEventListener('click', (e) => {
+                const clickedButton = e.target.closest('.filter-btn');
+                if (!clickedButton) return;
+
+                e.preventDefault();
+                categoryFilter.querySelector('.filter-btn.active').classList.remove('active');
+                clickedButton.classList.add('active');
+
+                const category = clickedButton.getAttribute('data-category');
+                
+                toolSections.forEach(section => {
+                    const sectionCategory = section.getAttribute('data-category');
+                    const isCalculator = sectionCategory && sectionCategory.startsWith('calculator-');
+
+                    if (category === 'all' || sectionCategory === category || (category === 'calculators' && isCalculator)) {
+                        section.style.display = 'block';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
