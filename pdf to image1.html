@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF to Image Converter | Convert All Pages to JPG, PNG, WebP</title>
+    <meta name="description" content="A professional, 100% server-free tool to convert PDF pages to images. Download single pages or all pages as a ZIP. Convert PDF to JPG, PNG, or WebP with full privacy.">
+    <meta name="keywords" content="pdf to image, pdf to zip, download all pdf pages as images, pdf to jpg, pdf to png, server-free pdf converter">
+    <meta name="author" content="Your Name or Company">
+
+    <!-- Open Graph & Twitter Meta Tags -->
+    <!-- ... (same as previous version) ... -->
+    
+    <!-- PDF.js library from Mozilla CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    <!-- JSZip library for client-side zipping -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+
+    <!-- Structured Data (Schema.org) -->
+    <!-- ... (same as previous version) ... -->
+
+    <style>
+        :root {
+            --bg-color: #f0f2f5; --container-bg: #ffffff; --text-color: #333; --primary-color: #1a73e8;
+            --border-color: #ccc; --input-bg: #f8f9fa; --download-btn-bg: #28a745; --download-btn-hover-bg: #218838; --theme-bar-bg: #e9ecef;
+        }
+        .theme-ocean {
+            --bg-color: #e0f7fa; --container-bg: #ffffff; --text-color: #004d40; --primary-color: #00796b;
+            --border-color: #b2dfdb; --input-bg: #e0f2f1; --download-btn-bg: #00897b; --download-btn-hover-bg: #00695c; --theme-bar-bg: #b2dfdb;
+        }
+        .theme-dark {
+            --bg-color: #121212; --container-bg: #1e1e1e; --text-color: #e0e0e0; --primary-color: #bb86fc;
+            --border-color: #444; --input-bg: #2c2c2c; --download-btn-bg: #03dac6; --download-btn-hover-bg: #018786; --theme-bar-bg: #2c2c2c;
+        }
+        .theme-light { /* Already defined in :root */ }
+        .theme-sunset {
+            --bg-color: #fbe9e7; --container-bg: #fff3e0; --text-color: #4e342e; --primary-color: #ff7043;
+            --border-color: #ffccbc; --input-bg: #fbe9e7; --download-btn-bg: #f4511e; --download-btn-hover-bg: #e64a19; --theme-bar-bg: #ffccbc;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 20px;
+            display: flex; justify-content: center; align-items: center; min-height: 100vh; transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            background-color: var(--container-bg); padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%; max-width: 600px; box-sizing: border-box; transition: background-color 0.3s;
+        }
+        .theme-switcher {
+            display: flex; justify-content: center; margin-bottom: 25px; background-color: var(--theme-bar-bg);
+            border-radius: 8px; padding: 5px; transition: background-color 0.3s;
+        }
+        .theme-btn {
+            flex-grow: 1; padding: 8px 12px; border: none; background-color: transparent; color: var(--text-color);
+            cursor: pointer; border-radius: 6px; transition: background-color 0.3s, color 0.3s; font-weight: 500; font-size: 14px;
+        }
+        .theme-btn.active { background-color: var(--primary-color); color: #ffffff; }
+        .theme-dark .theme-btn.active { color: #121212; }
+        .theme-btn:not(.active):hover { background-color: rgba(0, 0, 0, 0.05); }
+        .theme-dark .theme-btn:not(.active):hover { background-color: rgba(255, 255, 255, 0.1); }
+
+        h1 { text-align: center; color: var(--primary-color); margin-top: 0; margin-bottom: 20px; transition: color 0.3s; }
+
+        .upload-area { border: 2px dashed var(--border-color); border-radius: 8px; padding: 40px; text-align: center; cursor: pointer; margin-bottom: 20px; transition: border-color 0.3s; }
+        .upload-area:hover { border-color: var(--primary-color); }
+        #file-input { display: none; }
+
+        .controls { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; align-items: flex-end; }
+        .input-group, .quality-group { display: flex; flex-direction: column; gap: 5px; flex-grow: 1; }
+        .input-group label, .quality-group label { font-weight: 600; font-size: 14px; }
+        .input-group select { padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; background-color: var(--input-bg); color: var(--text-color); font-size: 16px; }
+        .quality-group { flex-grow: 2; min-width: 150px; }
+        .quality-group input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 8px; background: var(--border-color); border-radius: 5px; outline: none; }
+        .quality-group input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; background: var(--primary-color); cursor: pointer; border-radius: 50%; }
+
+        .page-navigation { display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 20px; }
+        .nav-btn { background-color: var(--primary-color); color: white; border: none; border-radius: 4px; padding: 8px 12px; font-size: 16px; cursor: pointer; }
+        .nav-btn:disabled { background-color: var(--border-color); cursor: not-allowed; }
+
+        .preview-container { text-align: center; }
+        .preview-container canvas { max-width: 100%; border: 1px solid var(--border-color); border-radius: 4px; }
+        .image-info { margin-top: 10px; font-weight: 500; }
+
+        .download-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        .download-btn { display: block; width: 100%; padding: 12px; background-color: var(--download-btn-bg); color: white; border: none; border-radius: 4px; text-align: center; text-decoration: none; font-size: 16px; cursor: pointer; transition: background-color 0.3s; box-sizing: border-box; }
+        .download-btn.disabled { background-color: #ccc; cursor: not-allowed; }
+        .download-btn:not(.disabled):hover { background-color: var(--download-btn-hover-bg); }
+        .hidden { display: none; }
+        .loader { text-align: center; font-weight: 500; font-size: 18px; color: var(--primary-color); }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="theme-switcher">
+            <button class="theme-btn" data-theme="theme-light">Light</button>
+            <button class="theme-btn" data-theme="theme-ocean">Ocean</button>
+            <button class="theme-btn" data-theme="theme-dark">Dark</button>
+            <button class="theme-btn" data-theme="theme-sunset">Sunset</button>
+        </div>
+        
+        <h1>PDF to Image Converter</h1>
+        
+        <div class="upload-area" id="upload-area">
+            <p>Click to select a PDF file</p>
+            <input type="file" id="file-input" accept="application/pdf">
+        </div>
+
+        <div class="status-area">
+            <div id="loader" class="loader hidden"></div>
+            <div id="pdf-info" class="image-info hidden"></div>
+        </div>
+
+        <div class="page-navigation hidden" id="page-nav">
+            <button id="prev-page" class="nav-btn">Previous</button>
+            <span id="page-counter"></span>
+            <button id="next-page" class="nav-btn">Next</button>
+        </div>
+
+        <div class="controls hidden" id="controls">
+            <div class="input-group">
+                <label for="format-select">Convert to:</label>
+                <select id="format-select">
+                    <option value="png">PNG</option>
+                    <option value="jpeg" selected>JPEG</option>
+                    <option value="webp">WebP</option>
+                </select>
+            </div>
+            <div class="quality-group" id="quality-controls">
+                <label for="quality-slider">Quality (<span id="quality-value">92</span>%)</label>
+                <input type="range" id="quality-slider" min="1" max="100" value="92">
+            </div>
+        </div>
+
+        <div class="preview-container hidden" id="preview">
+            <canvas id="pdf-canvas"></canvas>
+            <div id="converted-info" class="image-info"></div>
+        </div>
+
+        <div class="download-actions">
+            <a class="download-btn disabled" id="download-btn">Download Image</a>
+            <a class="download-btn disabled" id="download-all-btn">Download All as ZIP</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js`;
+
+            // UI Elements
+            const downloadAllBtn = document.getElementById('download-all-btn');
+            // ... (all other element selections are the same)
+            const uploadArea = document.getElementById('upload-area');
+            const fileInput = document.getElementById('file-input');
+            const loader = document.getElementById('loader');
+            const pdfInfo = document.getElementById('pdf-info');
+            const pageNav = document.getElementById('page-nav');
+            const prevPageBtn = document.getElementById('prev-page');
+            const nextPageBtn = document.getElementById('next-page');
+            const pageCounter = document.getElementById('page-counter');
+            const controls = document.getElementById('controls');
+            const formatSelect = document.getElementById('format-select');
+            const qualityControls = document.getElementById('quality-controls');
+            const qualitySlider = document.getElementById('quality-slider');
+            const qualityValue = document.getElementById('quality-value');
+            const previewContainer = document.getElementById('preview');
+            const pdfCanvas = document.getElementById('pdf-canvas');
+            const convertedInfo = document.getElementById('converted-info');
+            const downloadBtn = document.getElementById('download-btn');
+            const themeButtons = document.querySelectorAll('.theme-btn');
+
+
+            let pdfDoc = null;
+            let currentPage = 1;
+            let currentFileName = '';
+
+            // --- THEME LOGIC --- (same as before)
+            function applyTheme(themeName) {
+                document.body.className = '';
+                document.body.classList.add(themeName);
+                localStorage.setItem('selectedThemePdfConverter', themeName);
+                themeButtons.forEach(btn => {
+                    btn.classList.toggle('active', btn.getAttribute('data-theme') === themeName);
+                });
+            }
+            themeButtons.forEach(button => button.addEventListener('click', () => applyTheme(button.getAttribute('data-theme'))));
+            const savedTheme = localStorage.getItem('selectedThemePdfConverter') || 'theme-light';
+            applyTheme(savedTheme);
+
+
+            // --- PDF CONVERTER LOGIC ---
+            uploadArea.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+            
+            async function handleFile(file) {
+                 if (!file || file.type !== 'application/pdf') {
+                    alert('Please select a valid PDF file.');
+                    return;
+                }
+                
+                resetUI();
+                loader.classList.remove('hidden');
+                loader.textContent = 'Loading PDF...';
+
+                const fileReader = new FileReader();
+                fileReader.onload = async (event) => {
+                    try {
+                        const typedarray = new Uint8Array(event.target.result);
+                        pdfDoc = await pdfjsLib.getDocument({ data: typedarray }).promise;
+                        
+                        currentPage = 1;
+                        currentFileName = file.name.replace('.pdf', '');
+                        pdfInfo.textContent = `File: ${file.name} (${pdfDoc.numPages} pages)`;
+                        pdfInfo.classList.remove('hidden');
+                        
+                        controls.classList.remove('hidden');
+                        pageNav.classList.remove('hidden');
+                        previewContainer.classList.remove('hidden');
+
+                        await renderPage(currentPage);
+                        downloadAllBtn.classList.remove('disabled');
+
+                    } catch (error) {
+                        alert('Error loading PDF file. It may be corrupted or protected.');
+                        resetUI();
+                    }
+                };
+                fileReader.readAsArrayBuffer(file);
+            }
+
+            async function renderPage(pageNum) {
+                loader.classList.remove('hidden');
+                loader.textContent = `Rendering page ${pageNum}...`;
+                downloadBtn.classList.add('disabled');
+                
+                const page = await pdfDoc.getPage(pageNum);
+                const viewport = page.getViewport({ scale: 1.5 });
+                const context = pdfCanvas.getContext('2d');
+                pdfCanvas.height = viewport.height;
+                pdfCanvas.width = viewport.width;
+
+                await page.render({ canvasContext: context, viewport: viewport }).promise;
+                
+                updatePageCounter();
+                updateNavButtons();
+                convertAndDisplayCurrentPage();
+                loader.classList.add('hidden');
+            }
+
+            function convertAndDisplayCurrentPage() {
+                const targetFormat = formatSelect.value;
+                const mimeType = `image/${targetFormat}`;
+                const quality = parseInt(qualitySlider.value) / 100;
+                
+                pdfCanvas.toBlob((blob) => {
+                    convertedInfo.textContent = `Converted Size: ${(blob.size / 1024).toFixed(2)} KB`;
+                    const url = URL.createObjectURL(blob);
+                    downloadBtn.href = url;
+                    downloadBtn.download = `${currentFileName}-page${currentPage}.${targetFormat}`;
+                    downloadBtn.classList.remove('disabled');
+                }, mimeType, (targetFormat === 'jpeg' || targetFormat === 'webp') ? quality : undefined);
+            }
+
+            // --- DOWNLOAD ALL LOGIC ---
+            downloadAllBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                if (!pdfDoc || downloadAllBtn.classList.contains('disabled')) return;
+
+                const originalText = downloadAllBtn.textContent;
+                downloadAllBtn.classList.add('disabled');
+                downloadBtn.classList.add('disabled');
+
+                try {
+                    const zip = new JSZip();
+                    const targetFormat = formatSelect.value;
+                    const mimeType = `image/${targetFormat}`;
+                    const quality = parseInt(qualitySlider.value) / 100;
+                    
+                    for (let i = 1; i <= pdfDoc.numPages; i++) {
+                        downloadAllBtn.textContent = `Zipping ${i}/${pdfDoc.numPages}...`;
+                        const page = await pdfDoc.getPage(i);
+                        const viewport = page.getViewport({ scale: 1.5 });
+                        const context = pdfCanvas.getContext('2d');
+                        pdfCanvas.height = viewport.height;
+                        pdfCanvas.width = viewport.width;
+
+                        await page.render({ canvasContext: context, viewport: viewport }).promise;
+
+                        const blob = await new Promise(resolve => pdfCanvas.toBlob(resolve, mimeType, quality));
+                        zip.file(`${currentFileName}-page${i}.${targetFormat}`, blob);
+                    }
+
+                    downloadAllBtn.textContent = 'Generating ZIP...';
+                    const zipBlob = await zip.generateAsync({ type: 'blob' });
+                    
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(zipBlob);
+                    link.download = `${currentFileName}.zip`;
+                    link.click();
+                    URL.revokeObjectURL(link.href);
+
+                } catch (error) {
+                    alert('An error occurred while creating the ZIP file.');
+                } finally {
+                    downloadAllBtn.textContent = originalText;
+                    downloadAllBtn.classList.remove('disabled');
+                    downloadBtn.classList.remove('disabled');
+                }
+            });
+
+
+            // --- Helper Functions ---
+            function updatePageCounter() { pageCounter.textContent = `Page ${currentPage} of ${pdfDoc.numPages}`; }
+            function updateNavButtons() {
+                prevPageBtn.disabled = (currentPage <= 1);
+                nextPageBtn.disabled = (currentPage >= pdfDoc.numPages);
+            }
+            prevPageBtn.addEventListener('click', () => { if (currentPage > 1) renderPage(--currentPage); });
+            nextPageBtn.addEventListener('click', () => { if (currentPage < pdfDoc.numPages) renderPage(++currentPage); });
+            formatSelect.addEventListener('change', () => {
+                qualityControls.classList.toggle('hidden', formatSelect.value === 'png');
+                if (pdfDoc) convertAndDisplayCurrentPage();
+            });
+            qualitySlider.addEventListener('input', () => {
+                qualityValue.textContent = qualitySlider.value;
+                if(pdfDoc) convertAndDisplayCurrentPage();
+            });
+            function resetUI() {
+                pdfDoc = null;
+                loader.classList.add('hidden');
+                pdfInfo.classList.add('hidden');
+                controls.classList.add('hidden');
+                pageNav.classList.add('hidden');
+                previewContainer.classList.add('hidden');
+                downloadBtn.classList.add('disabled');
+                downloadAllBtn.classList.add('disabled'); // Reset new button
+                fileInput.value = '';
+            }
+            downloadBtn.addEventListener('click', (e) => {
+                if (downloadBtn.classList.contains('disabled')) e.preventDefault();
+            });
+        });
+    </script>
+
+</body>
+</html>
